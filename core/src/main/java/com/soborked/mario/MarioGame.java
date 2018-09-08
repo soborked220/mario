@@ -1,33 +1,33 @@
 package com.soborked.mario;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.soborked.mario.screens.PlayScreen;
 
-public class MarioGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+public class MarioGame extends Game {
+
+	/**
+	 * Want to only have one of these up at a time.
+	 */
+	public SpriteBatch batch;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		setScreen(new PlayScreen(this));
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		super.render(); //Delegates rendering to Game class, which in turn delegates to currently active Screen.
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 	}
 }
