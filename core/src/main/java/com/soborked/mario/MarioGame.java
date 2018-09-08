@@ -10,11 +10,14 @@ import com.soborked.mario.screens.PlayScreen;
 
 public class MarioGame extends Game {
 
+	public static final int VIRTUAL_WIDTH = 400;
+	public static final int VIRTUAL_HEIGHT = 208;
+
 	/**
 	 * Want to only have one of these up at a time.
 	 */
 	public SpriteBatch batch;
-	
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
