@@ -53,9 +53,8 @@ public class PlayScreen implements Screen {
         this.gameCam = new OrthographicCamera();
         //this.gamePort = new StretchViewport(800, 480, gameCam);
         //this.gamePort = new ScreenViewport(gameCam);
-        this.gamePort = new FitViewport(MarioGame.VIRTUAL_WIDTH / MarioGame.PPM, MarioGame.VIRTUAL_HEIGHT / MarioGame.PPM, gameCam);
+        this.gamePort = new FitViewport(MarioGame.VIRTUAL_WIDTH / MarioGame.PPM, MarioGame.VIRTUAL_HEIGHT / MarioGame.PPM, gameCam); //TODO extract scaling
         this.hud = new Hud(game.batch);
-
 
         this.mapLoader = new TmxMapLoader();
         this.map = mapLoader.load("level1.tmx");
@@ -65,12 +64,12 @@ public class PlayScreen implements Screen {
 
 
         //Create physics
-        world = new World(new Vector2(0,-10), true);
-        b2dr = new Box2DDebugRenderer();
+        world = new World(new Vector2(0,-10), true); //Adds gravity. Really should be 9.8
+        b2dr = new Box2DDebugRenderer(); //Allows me to see shapes on map
 
-        new B2WorldCreator(world, map);
+        new B2WorldCreator(world, map); //Adds map objects to world
 
-        this.player = new Mario(this.world);
+        this.player = new Mario(this.world); //Creates mario
     }
 
     public void handleInput(float deltatime){

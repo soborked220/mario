@@ -20,6 +20,7 @@ public class B2WorldCreator {
     private static final int COINS = 4;
     private static final int BRICKS_LAYER = 5;
 
+    //TODO hate the name of this class
     public B2WorldCreator(World world, TiledMap map){
 
         //TODO Can add a property to each layer to indicate if is Object, Graphic, etc.
