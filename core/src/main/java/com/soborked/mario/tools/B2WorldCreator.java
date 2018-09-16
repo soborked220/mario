@@ -8,10 +8,13 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.soborked.mario.MarioGame;
 import com.soborked.mario.sprites.Brick;
 import com.soborked.mario.sprites.Coin;
+import com.soborked.mario.sprites.Ground;
+import com.soborked.mario.sprites.Pipe;
 
 public class B2WorldCreator {
 
-
+    //These are based on the layers defined in the tmx file
+    //The tmx file defines which objects exist in a given layer, and their pixel location in the tile map image
     private static final int GROUND_LAYER = 2;
     private static final int PIPES_LAYER = 3;
     private static final int COINS = 4;
@@ -19,35 +22,19 @@ public class B2WorldCreator {
 
     public B2WorldCreator(World world, TiledMap map){
 
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
-
+        //TODO Can add a property to each layer to indicate if is Object, Graphic, etc.
+        //TODO Could loop through all layers and simply handle rectangles, circles, etc. separately
+        
         //Loop through every object in the specified map layer, and create a physical body for it.
         for(MapObject object : map.getLayers().get(GROUND_LAYER).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set( (rect.getX() + rect.getWidth() / 2) / MarioGame.PPM, (rect.getY() + rect.getHeight() / 2) / MarioGame.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox((rect.getWidth() / 2) / MarioGame.PPM, (rect.getHeight() / 2) / MarioGame.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
+            new Ground(world, map, rect);
         }
 
         //Loop through every object in the specified map layer, and create a physical body for it.
         for(MapObject object : map.getLayers().get(PIPES_LAYER).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set( (rect.getX() + rect.getWidth() / 2) / MarioGame.PPM, (rect.getY() + rect.getHeight() / 2) / MarioGame.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox((rect.getWidth() / 2) / MarioGame.PPM, (rect.getHeight() / 2) / MarioGame.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
+            new Pipe(world, map, rect);
         }
 
         //Loop through every object in the specified map layer, and create a physical body for it.

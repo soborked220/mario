@@ -4,17 +4,16 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Coin extends StaticTile {
+public class Ground extends StaticTile {
 
     /**
      * Instantiates object and adds it to the world.
      *
-     * @param world physical world of the game
-     * @param map the visual tiles of the game world
+     * @param world  physical world of the game
+     * @param map    the visual tiles of the game world
      * @param bounds the dimensions of the object
      */
-    public Coin(World world, TiledMap map, Rectangle bounds){
+    public Ground(World world, TiledMap map, Rectangle bounds) {
         super(world, map, bounds);
     }
-
 }

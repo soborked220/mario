@@ -6,7 +6,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.soborked.mario.MarioGame;
 
-public abstract class InteractiveTileObject {
+/**
+ * Creates a static object in the world
+ */
+public abstract class StaticTile {
 
     protected World world;
     protected TiledMap map;
@@ -14,7 +17,14 @@ public abstract class InteractiveTileObject {
     protected Rectangle bounds;
     protected Body body;
 
-    public InteractiveTileObject(World world, TiledMap map, Rectangle bounds){
+    /**
+     * Instantiates object and adds it to the world.
+     *
+     * @param world physical world of the game
+     * @param map the visual tiles of the game world
+     * @param bounds the dimensions of the object
+     */
+    public StaticTile(World world, TiledMap map, Rectangle bounds){
         this.world = world;
         this.map = map;
         this.bounds = bounds;
@@ -32,4 +42,6 @@ public abstract class InteractiveTileObject {
         fdef.shape = shape;
         body.createFixture(fdef);
     }
+
+
 }
