@@ -64,7 +64,7 @@ public class PlayScreen implements Screen {
         this.map = mapLoader.load("level1.tmx");
         this.renderer = new OrthogonalTiledMapRenderer(map, 1 / MarioGame.PPM);
 
-        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //Why doesn't this need scaling by PPM?
 
 
         //Create physics
@@ -154,7 +154,28 @@ public class PlayScreen implements Screen {
         handleInput(deltatime);
 
         world.step(1 / 60f, 6, 2); //What is this?
-        gameCam.position.x = player.b2body.getPosition().x;
+
+        if(player.b2body.getPosition().x >= MarioGame.VIRTUAL_WIDTH / 2 / MarioGame.PPM){ //If mario crosses the middle of the screen
+            gameCam.position.x = player.b2body.getPosition().x;
+        }
+
+
+      /*  //If you want to disable automatically updating the camera to mario's current position, and manually direct instead
+        if(Gdx.input.isKeyPressed(Input.Keys.S)){
+            gameCam.position.x = gamePort.getWorldWidth() / 2; //Snap back to start view
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.P)){
+            gameCam.position.x = player.b2body.getPosition().x; //Center on mario.
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.B)){
+            gameCam.position.x = player.b2body.getPosition().x - (100 / MarioGame.PPM); //Snap to just behind mario
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.L)){
+            gameCam.position.x = player.b2body.getPosition().x + (100 / MarioGame.PPM); //Snap to just behind mario
+        }*/
 
         gameCam.update();
         renderer.setView(gameCam);
