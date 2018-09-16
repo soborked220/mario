@@ -6,7 +6,7 @@ import com.soborked.mario.MarioGame;
 
 public class Mario extends Sprite {
 
-    public World world;
+    private World world;
     public Body b2body;
 
 
