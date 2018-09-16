@@ -22,9 +22,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.soborked.mario.MarioGame;
 import com.soborked.mario.scenes.Hud;
+import com.soborked.mario.sprites.Mario;
 import com.soborked.mario.tools.B2WorldCreator;
 import com.sun.prism.image.ViewPort;
-import main.java.com.soborked.mario.sprites.Mario;
 
 
 public class PlayScreen implements Screen {
@@ -61,7 +61,7 @@ public class PlayScreen implements Screen {
         this.map = mapLoader.load("level1.tmx");
         this.renderer = new OrthogonalTiledMapRenderer(map, 1 / MarioGame.PPM);
 
-        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //Why doesn't this need scaling by PPM?
+        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
 
         //Create physics
@@ -78,11 +78,24 @@ public class PlayScreen implements Screen {
             gameCam.position.x += 100 * deltatime;
         }*/
 
+        //Do these match?
+        if(Gdx.input.isKeyJustPressed(Input.Keys.I)){
+            System.out.println("Body world center x: " + player.b2body.getWorldCenter().x); //The x coordinate of the center of the body in the game world
+            System.out.println("Body world center y: " + player.b2body.getWorldCenter().y); //The y coordinate of the center of the body in the game world
+            System.out.println("Game Port World Height: " + gamePort.getWorldHeight()); //2.08.
+            System.out.println("Game Port World Width: " + gamePort.getWorldWidth()); //4.0.
+            System.out.println("Game Port Screen Height: " + gamePort.getScreenHeight()); //333. Original game height/width ratio is 208/400 = .52. Scaled up leads to 333/640
+            System.out.println("Game Port Screen Width: " + gamePort.getScreenWidth()); //640. Original game height/width ratio is 208/400 = .52. Scaled up leads to 333/640
+            System.out.println("Game Port Screen X: " + gamePort.getScreenX()); //0. This is black space of x sides. Believe it is total black space, so divide by 2 to get one side
+            System.out.println("Game Port Screen Y: " + gamePort.getScreenY()); //73. Adjusting screen larger lowered this. Maybe the black space at the bottom?
+        }
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
             player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){
+            //TODO Interface method here
             player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
         }
 
@@ -96,7 +109,9 @@ public class PlayScreen implements Screen {
 
         world.step(1 / 60f, 6, 2); //What is this?
 
-        if(player.b2body.getPosition().x >= MarioGame.VIRTUAL_WIDTH / 2 / MarioGame.PPM){ //If mario crosses the middle of the screen
+        if(player.b2body.getPosition().x >= MarioGame.VIRTUAL_WIDTH / 2 / MarioGame.PPM){ //TODO If mario crosses the middle of the screen
+            //TODO create method on mario to extract its X position
+            //TODO consider creating an interface for all bodies to retrieve their X Y coordinates etc.
             gameCam.position.x = player.b2body.getPosition().x;
         }
 
@@ -169,7 +184,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-        //texture.dispose();
         map.dispose();
         renderer.dispose();
         world.dispose();

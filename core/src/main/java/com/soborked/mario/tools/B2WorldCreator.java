@@ -24,7 +24,7 @@ public class B2WorldCreator {
 
         //TODO Can add a property to each layer to indicate if is Object, Graphic, etc.
         //TODO Could loop through all layers and simply handle rectangles, circles, etc. separately
-        
+
         //Loop through every object in the specified map layer, and create a physical body for it.
         for(MapObject object : map.getLayers().get(GROUND_LAYER).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();

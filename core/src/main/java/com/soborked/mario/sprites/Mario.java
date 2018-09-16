@@ -1,4 +1,4 @@
-package main.java.com.soborked.mario.sprites;
+package com.soborked.mario.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.*;
