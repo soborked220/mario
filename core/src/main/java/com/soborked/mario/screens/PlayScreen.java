@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -40,6 +41,7 @@ public class PlayScreen implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
+    private TextureAtlas atlas;
 
     //Physics from Box2D
     private World world;
@@ -48,6 +50,7 @@ public class PlayScreen implements Screen {
     private Mario player;
 
     public PlayScreen(MarioGame game){
+        this.atlas = new TextureAtlas("Mario_and_Enemies.pack");
         this.game = game;
         //this.texture = new Texture("badlogic.jpg"); //TODO inject
         this.gameCam = new OrthographicCamera();
@@ -69,7 +72,11 @@ public class PlayScreen implements Screen {
 
         new B2WorldCreator(world, map); //Adds map objects to world
 
-        this.player = new Mario(this.world); //Creates mario
+        this.player = new Mario(this.world, this); //Creates mario
+    }
+
+    public TextureAtlas getAtlas(){
+        return atlas;
     }
 
     public void handleInput(float deltatime){
@@ -107,6 +114,8 @@ public class PlayScreen implements Screen {
         handleInput(deltatime);
 
         world.step(1 / 60f, 6, 2); //What is this?
+
+        player.update(deltatime);
 
         if(player.b2body.getPosition().x >= MarioGame.VIRTUAL_WIDTH / 2 / MarioGame.PPM){ //TODO If mario crosses the middle of the screen
             //TODO create method on mario to extract its X position
@@ -152,11 +161,18 @@ public class PlayScreen implements Screen {
         renderer.render();
         b2dr.render(world, gameCam.combined);
 
+        //Draws mario
+        game.batch.setProjectionMatrix(gameCam.combined);
+        game.batch.begin();
+        player.draw(game.batch);
+        game.batch.end();
+
         /*game.batch.setProjectionMatrix(gameCam.combined); //Tells gamePort to only render what the camera can see
         game.batch.begin(); //Open the box.
         game.batch.draw(texture, 100, 100); //Draw box: origin is bottom left of screen
         game.batch.end(); //Close box*/
 
+        //Draws the hud
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
     }
