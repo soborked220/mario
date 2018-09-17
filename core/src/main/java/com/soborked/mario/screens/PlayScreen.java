@@ -41,7 +41,7 @@ public class PlayScreen implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
-    private TextureAtlas atlas;
+    private TextureAtlas atlas; //libgdx asset manager is better for larger file sets
 
     //Physics from Box2D
     private World world;
